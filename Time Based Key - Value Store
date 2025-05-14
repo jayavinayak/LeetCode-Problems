@@ -1,0 +1,66 @@
+Time-Based Key-Value Store
+Problem Statement
+Design a time-based key-value data structure that can store multiple values for the same key at different timestamps and retrieve the value of a key at a specific timestamp.
+
+Constraints:
+1 <= key.length, value.length <= 100
+1 <= timestamp <= 10^7
+All timestamp values for the same key are strictly increasing.
+At most 2 * 10^5 total calls will be made to set and get.
+
+My Solution
+from collections import defaultdict
+
+class TimeMap:
+    def __init__(self):
+        self.store = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.store[key].append([value, timestamp])
+
+    def get(self, key: str, timestamp: int) -> str:
+        res = ""
+        values = self.store.get(key, [])
+        l, r = 0, len(values) - 1
+        while l <= r:
+            m = (l + r) // 2
+            if values[m][1] > timestamp:
+                r = m - 1
+            else:
+                res = values[m][0]
+                l = m + 1
+        return res
+
+My Explanation
+I used a defaultdict(list) to store a list of [value, timestamp] pairs for each key.
+
+The set() method appends the value-timestamp pair to the key’s list, maintaining the order as timestamps are strictly increasing.
+
+The get() method performs a binary search to find the value associated with the greatest timestamp that is less than or equal to the given timestamp.
+
+If no such timestamp exists for the key, we return an empty string "".
+
+This approach ensures optimal performance even for large datasets due to the logarithmic search time in get().
+
+Time & Space Complexity
+set() method:
+Time Complexity: O(1)
+Appending to the list is a constant-time operation.
+
+Space Complexity: O(1)
+Space grows only with the number of entries stored.
+
+get() method:
+Time Complexity: O(log n)
+A binary search is used to find the relevant timestamp from the list of n entries for a key.
+
+Space Complexity: O(1)
+Only a few variables are used for binary search.
+
+Overall:
+Total Space: O(N), where N is the total number of set operations.
+
+Total Time per Operation:
+set: O(1)
+get: O(log n) where n is the number of values stored for the queried key.
+
