@@ -1,0 +1,1 @@
+This repository contains my curated solutions to LeetCode problems in Python. Each solution includes clean code, detailed explanations, and time/space complexity analysis. It's designed to improve my problem-solving skills and prepare for technical interviews. Solutions are organized by problem in individual folders. More problems will be added regularly
