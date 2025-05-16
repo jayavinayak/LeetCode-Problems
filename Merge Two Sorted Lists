@@ -1,0 +1,60 @@
+Description:
+You are given the heads of two sorted linked lists list1 and list2.
+Merge the two lists into one sorted linked list and return the head of the merged list.
+The merged list should be made by splicing together the nodes of the first two lists.
+
+My Thoughts:
+
+I need to merge two already sorted linked lists into a single sorted list.
+Instead of worrying about whether the merged list is empty initially, I can use a dummy node as a starting point.
+I’ll use a tail pointer to track the end of the merged list.
+I will compare nodes from both lists, attaching the smaller one to tail, and move forward accordingly.
+After the loop, one of the lists might still have nodes left, which I will directly attach to the merged list.
+Finally, I will return dummy.next since dummy is just a placeholder.
+
+Solution:
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: ListNode, list2: ListNode) -> ListNode:
+        dummy = ListNode()
+        tail = dummy
+
+        while list1 and list2:
+            if list1.val < list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+
+        if list1:
+            tail.next = list1
+        elif list2:
+            tail.next = list2
+
+        return dummy.next
+
+Explanation:
+
+We use a dummy node to simplify handling of the head of the merged list.
+A tail pointer is used to build the new list node by node.
+In each iteration of the while loop:
+We compare the values of the current nodes in list1 and list2.
+Attach the smaller node to tail.next and move that list's pointer forward.
+Move tail to the newly added node.
+Once we run out of nodes in either list, we attach the rest of the other list directly (since it’s already sorted).
+dummy.next gives us the actual head of the new merged list, skipping the dummy placeholder.
+
+
+Efficieny:
+Time Complexity: O(n + m)
+Where n is the number of nodes in list1 and m is the number of nodes in list2, We visit each node exactly once.
+
+Space Complexity: O(1)
+We are not using any extra data structures. We only reuse existing nodes and adjust pointers.
